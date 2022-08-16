@@ -6,7 +6,7 @@
 /*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 11:48:24 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/16 18:44:23 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/16 18:51:21 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,4 +98,5 @@ int main(int ac, char **av)
     return (0);
 }
 
-// *mutex = philo[+1]->mutex;
+// TODO : tableau de mutex
+// TODO : liste chainee en boucle (je vais au dernier node etje pointe sur le premier)
