@@ -6,9 +6,9 @@ RM 			= 	rm -f
 
 INC			=	-I includes 
 
-CFLAGS		=	-Wall -Wextra -Werror -pthread -g3
+CFLAGS		=	-Wall -Wextra -Werror -g3
 
-LFLAGS		=	-L./philo -I./philo 
+LFLAGS		=	-L./philo -I./philo -lpthread
 
 FILES		=	philo.c \
 				init.c \
@@ -28,7 +28,7 @@ $(OBJS_PATH)%.o : 	$(SRCS_PATH)%.c
 			$(CC) $(CFLAGS) -c $< $(OUTPUT_OPTION) $(INC)
 
 $(NAME):	$(OBJS)
-			$(CC) $(OBJS) $(LFLAGS) $(OUTPUT_OPTION) -fsanitize=address
+			$(CC) $(OBJS) $(LFLAGS) $(OUTPUT_OPTION) 
 
 clean:
 			$(RM) $(OBJS)

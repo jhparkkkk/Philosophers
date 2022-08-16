@@ -6,8 +6,23 @@
 /*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 11:48:32 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/16 11:55:59 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/16 15:16:35 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void    destroy_philo(t_philo **ph)
+{
+    int i;
+
+    i = 0;
+    while (ph[i])
+    {
+        // if (ph[i]->p)
+            // free(ph[i]->p);
+        free(ph[i]);
+        i++;
+    }
+    free(ph);
+}

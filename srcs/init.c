@@ -6,7 +6,7 @@
 /*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 11:48:30 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/16 14:30:30 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/16 16:57:08 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,29 +21,35 @@ void    set_param(t_param *p, char **av)
     p->eat_n_times = ft_atoi(*av);
 }
 
-void    destroy_philo(t_philo **ph)
-{
-    while (ph && *ph)
-        free(ph++);
-    free(ph);
-}
 
-int set_philo(t_philo **ph, t_param *p)
+t_philo **set_philo(t_param *p)
 {
+    t_philo **ph;
     int i;
     
     ph = malloc(sizeof(t_philo *) * p->nb_philo);
     if (!ph)
-        return (1);
+        return (NULL);
     i = 0;
     while(i < p->nb_philo)
     {
         ph[i] = malloc(sizeof(t_philo));
-        if (!ph)
-            return (destroy_philo(ph),0);
+        if (!ph[i])
+            return (NULL);
         ph[i]->p = malloc(sizeof(t_param));
+        if (!ph[i]->p)
+            return (NULL);
         ph[i]->p = p;
         i++;
     }
-    return(0);
+    return(ph);
+}
+
+int    init(t_philo **ph, t_param *p, char **av)
+{
+    set_param(p, av + 1);
+    ph = set_philo(p);    
+    if (!ph || set_mutex(ph))
+        return (EXIT_FAILURE);
+    return (0);
 }
