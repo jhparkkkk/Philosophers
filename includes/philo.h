@@ -6,7 +6,7 @@
 /*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 11:48:47 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/16 18:43:21 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/17 17:57:28 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,50 +23,59 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <pthread.h>
+#include <sys/time.h>
 
-typedef struct s_param 
-{
-    int nb_philo;
-    int time_to_die;
-    int time_to_eat;
-    int time_to_sleep;
-    int eat_n_times;    
-}       t_param;
+# define EAT "is eating"
+# define SLEEP "is sleeping"
+# define THINK "is thinking"
 
 typedef struct s_mutex
 {
     pthread_mutex_t *chopsticks;
-    int someone_is_dead;
-}   t_mutex;
-
+    int             someone_is_dead;
+    int             odd;
+    int             even;
+    int             tmp_odd;
+    int             tmp_even;
+}                   t_mutex;
+//if (philo->id % 2 == 0 && even > 0 || philo->id % 2 != 0 && odd > 0)
+  //  eat();
+//else
+  //  think();
 typedef struct s_philo
 {
-    int             idx;
-    pthread_t       th; 
-    pthread_mutex_t mutex;
-    // *mutex
-    t_param         *p;
+    int        		     	id;
+    pthread_t   		    th; 
+    t_mutex                 *mutex;
+    int             		nb_philo;
+    int             		time_to_die;
+    int             		time_to_eat;
+    int             		time_to_sleep;
+    int             		eat_n_times;
+	struct s_philo			*next;  
 }                   t_philo;
 
 
 /**** UTILS ****/
 
-int	ft_atoi(const char	*str);
-int check_input(char **av);
+int     ft_atoi(const char	*str);
+int     check_input(int ac, char **av);
+void	opti_sleep(long int time_in_ms);
+void    set_odd_even(t_philo **p, int nb_philo);
 
 /**** INIT *****/
-int     init(t_philo **ph, t_param *p, char **av);
-void    set_param(t_param *p, char **av);
-t_philo **set_philo(t_param *p);
-int     set_mutex(t_philo **ph);
+t_philo			*set_data(char **av);
+t_philo         **init(char **av);
+int				set_mutex(t_philo **p);
 
 /**** PHILO ****/
-int run_thread(t_philo **ph, t_param *p);
+int run_thread(t_philo **p);
+
 
 
 
 /**** DESTROY ****/
-void    destroy_philo(t_philo **ph);
+void    destroy_philo(t_philo **p);
 
 
 

@@ -6,95 +6,134 @@
 /*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 11:48:24 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/16 18:51:21 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/17 18:28:38 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 # include <pthread.h>
 
+void    eat(t_philo *p)
+{
+    if (p->id % 2 == 0)
+    {
+        if (p->id == p->nb_philo)
+            pthread_mutex_lock(&p->mutex->chopsticks[0]);
+        pthread_mutex_lock(&p->mutex->chopsticks[p->id - 1]);
+        pthread_mutex_lock(&p->mutex->chopsticks[p->id]);
+        printf("%d %d %s\n", p->time_to_eat, p->id, EAT);
+        opti_sleep(p->time_to_eat);
+        pthread_mutex_unlock(&p->mutex->chopsticks[p->id - 1]);
+        pthread_mutex_unlock(&p->mutex->chopsticks[p->id]);
+        p->mutex->tmp_even--;
+    }
+    else if (p->id % 2 != 0)
+    {
+        if (p->id == 1)
+            pthread_mutex_lock(&p->mutex->chopsticks[p->nb_philo]);
+        else if (p->id == p->nb_philo)
+            pthread_mutex_lock(&p->mutex->chopsticks[0]);
+        else
+            pthread_mutex_lock(&p->mutex->chopsticks[p->id + 1]);
+        pthread_mutex_lock(&p->mutex->chopsticks[p->id]);
+        printf("%d %d %s\n", p->time_to_eat, p->id, EAT);
+        opti_sleep(p->time_to_eat);
+        pthread_mutex_unlock(&p->mutex->chopsticks[p->id + 1]);
+        pthread_mutex_unlock(&p->mutex->chopsticks[p->id]);
+        p->mutex->tmp_odd--;
+
+    }  
+}
+
 void *routine(void *arg)
 {
-    t_philo *ph;
-    ph = (t_philo *)arg;
+    t_philo *p;
+    p = (t_philo *)arg;
     
-    //write(1, "test\n", 5);
-    //while (ph->mutexes... != 1)
-    //{
+    if ((p->id % 2 == 0 && p->mutex->tmp_even > 0) || (p->id % 2 != 0 && p->mutex->tmp_odd > 0))
+    {
+        eat(p);
+    }
+    else
+    {
+        printf("%d %d %s\n", p->time_to_eat, p->id, THINK);
+        opti_sleep(p->time_to_sleep);
+    }
+    
+   
+    // while (p->mutex->someone_is_dead != 1)
+    // {
+    //     if (p->id % 2 != 0)
+    //     {
+    //         pthread_mutex_lock(&p->mutex->chopsticks[p->id]);
+    //         pthread_mutex_lock(&p->mutex->chopsticks[p->]);
+            
+            
+    //     }
         
-    //}
-    pthread_mutex_lock(&ph->mutex);
-    printf("My index is: %d\n", ph->idx);
-    //write(1, "test2\n", 5);
-    pthread_mutex_unlock(&ph->mutex);
+    // }
+    
+    // pthread_mutex_lock(&p->mutex->chopsticks[p->id]);
+    // printf("%d %s\n", p->id, EAT);
+    // printf("My index is: %d\n", p->id);
+    // opti_sleep(500);
+    // pthread_mutex_unlock(&p->mutex->chopsticks[p->id]);
     
     return (NULL);
 }
 
-int set_mutex(t_philo **ph)
+int run_thread(t_philo **p)
 {
-    int i;
+    t_philo *node;
+    int     i;
 
     i = 0;
-    while (i < (*ph)->p->nb_philo)
+    node = *p;
+    while(i < (*p)->nb_philo)
     {
-        if (pthread_mutex_init(&ph[i]->mutex, 0) != 0)
-        {
-            destroy_philo(ph);
-            return (1);
-        }
+        node->id = i + 1;
+        pthread_create(&node->th, NULL, &routine, node);
+        node = node->next;
         i++;
-    }
-
-    return (0);
-}
-
-int run_thread(t_philo **ph, t_param *p)
-{
-    int i;
-
-    i = 0;
-    while(i < p->nb_philo)
-    {
-        ph[i]->idx = i;
-        pthread_create(&ph[i]->th, NULL, &routine, ph[i]);
-        i++;
-        printf("?\n");
     }    
     i = 0;
-    while(i < p->nb_philo)
+    node = NULL;
+    node = *p;
+    while( i < (*p)->nb_philo)
     {
-        printf("wait\n");
-        pthread_join(ph[i]->th, 0);
+        pthread_join(node->th, 0);
+        node = node->next;
         i++;
-        // printf("wait\n");
     }
-    // sleep(1);
     return (0);
 }
 
 int main(int ac, char **av)
 {
-    t_param p;
-    t_philo **ph;
+    t_philo **p;
+    t_philo *tmp;
 
-
-    ph = NULL;
-    if (ac == 6 && check_input(av))
+    p = NULL;
+    tmp = NULL;
+    if (check_input(ac, av))
         return(printf("error\n"), EXIT_FAILURE);
-    set_param(&p, av + 1);
-    ph = set_philo(&p);
-    init(ph, &p, av);
-    set_mutex(ph);
-    run_thread(ph, &p);    
+    p = init(av);
+    set_mutex(p);
 
-    printf("NB PHILO      : %d\n", p.nb_philo);
-    printf("TIME TO DIE   : %d\n", p.time_to_die);
-    printf("TIME TO EAT   : %d\n", p.time_to_eat);
-    printf("TIME TO SLEEP : %d\n", p.time_to_sleep);
-    printf("EAT N TIMES   : %d\n", p.eat_n_times);
-    
-    // destroy_philo(ph);
+
+    run_thread(p);
+    // if (!p)
+    //     return (printf("sad philo\n"), 0);
+    // tmp = *p;
+    // int i = 0;
+    // while(i < 2)
+    // {
+    //     if (tmp->nb_philo)
+    //         printf("%d\n", tmp->nb_philo);
+    //     tmp = tmp->next;
+    //     i++;
+    // }
+    // destroy_philo(p);
     return (0);
 }
 

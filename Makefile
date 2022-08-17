@@ -11,6 +11,8 @@ CFLAGS		=	-Wall -Wextra -Werror -g3
 LFLAGS		=	-L./philo -I./philo -lpthread
 
 FILES		=	philo.c \
+				mutex.c \
+				sleep.c \
 				init.c \
 				destroy.c \
 				utils.c \
@@ -28,7 +30,7 @@ $(OBJS_PATH)%.o : 	$(SRCS_PATH)%.c
 			$(CC) $(CFLAGS) -c $< $(OUTPUT_OPTION) $(INC)
 
 $(NAME):	$(OBJS)
-			$(CC) $(OBJS) $(LFLAGS) $(OUTPUT_OPTION) 
+			$(CC) $(OBJS) $(LFLAGS) $(OUTPUT_OPTION) -fsanitize=thread
 
 clean:
 			$(RM) $(OBJS)

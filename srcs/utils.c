@@ -6,7 +6,7 @@
 /*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 11:48:35 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/16 16:26:26 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/17 17:10:27 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,10 @@ int	ft_atoi(const char	*str)
 	return (neg * nb);
 }
 
-int check_input(char **av)
+int check_input(int ac, char **av)
 {
+	if (ac != 6)
+		return (1);
     av++;
     while(av && *av)
         if (ft_atoi(*av++) <= 0)
