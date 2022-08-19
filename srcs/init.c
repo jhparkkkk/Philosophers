@@ -6,7 +6,7 @@
 /*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 11:48:30 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/17 17:40:50 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/19 18:08:12 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,17 @@ void    set_odd_even(t_philo **p, int nb_philo)
 {
     int i;
 
-    i = 0;
+    i = 1;
     
     (*p)->mutex->odd = 0;
     (*p)->mutex->even = 0;
-    while (++i <= nb_philo)
+    while (i <= nb_philo)
     {
         if (i % 2 == 0)
             (*p)->mutex->even++;
         else
             (*p)->mutex->odd++;
+        i++;
     }
     (*p)->mutex->tmp_even = (*p)->mutex->even;
     (*p)->mutex->tmp_odd = (*p)->mutex->odd;

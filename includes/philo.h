@@ -6,7 +6,7 @@
 /*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 11:48:47 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/17 17:57:28 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/19 18:17:52 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <pthread.h>
 #include <sys/time.h>
 
+# define CHOP "has taken a fork"
 # define EAT "is eating"
 # define SLEEP "is sleeping"
 # define THINK "is thinking"
@@ -37,16 +38,16 @@ typedef struct s_mutex
     int             even;
     int             tmp_odd;
     int             tmp_even;
+    long int        start_time;
+    long int        last_soup;
+
 }                   t_mutex;
-//if (philo->id % 2 == 0 && even > 0 || philo->id % 2 != 0 && odd > 0)
-  //  eat();
-//else
-  //  think();
+
 typedef struct s_philo
 {
     int        		     	id;
     pthread_t   		    th; 
-    t_mutex                 *mutex;
+    t_mutex             *mutex;
     int             		nb_philo;
     int             		time_to_die;
     int             		time_to_eat;
@@ -62,6 +63,7 @@ int     ft_atoi(const char	*str);
 int     check_input(int ac, char **av);
 void	opti_sleep(long int time_in_ms);
 void    set_odd_even(t_philo **p, int nb_philo);
+long int		get_time(void);
 
 /**** INIT *****/
 t_philo			*set_data(char **av);

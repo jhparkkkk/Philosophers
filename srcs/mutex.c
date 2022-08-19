@@ -6,7 +6,7 @@
 /*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 14:42:18 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/17 17:47:12 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/19 18:25:12 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ int set_mutex(t_philo **p)
             return (free(mutex), EXIT_FAILURE);
         i++;
     }
+    (*p)->mutex->start_time = get_time();
+    (*p)->mutex->last_soup = 0;
     set_odd_even(p, (*p)->nb_philo);
     tmp = *p;
     i = 0;
@@ -41,6 +43,9 @@ int set_mutex(t_philo **p)
         tmp->mutex->even = (*p)->mutex->even;
         tmp->mutex->tmp_odd = (*p)->mutex->tmp_odd;
         tmp->mutex->tmp_even = (*p)->mutex->tmp_even;
+        tmp->mutex->start_time = (*p)->mutex->start_time;
+        tmp->mutex->last_soup =(*p)->mutex->last_soup;
+        
         tmp = tmp->next;
         i++;
     }
