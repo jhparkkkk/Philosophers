@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeepark <jeepark@student42.fr>             +#+  +:+       +#+        */
+/*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 11:48:47 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/20 17:10:25 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/21 15:42:33 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,12 @@ typedef struct s_mutex
     pthread_mutex_t *chopsticks;
     pthread_mutex_t check_death;
     pthread_mutex_t signal_death;
+    pthread_mutex_t print;
     int             dead_philo;
-    int             odd;
-    int             even;
-    int             tmp_odd;
-    int             tmp_even;
+    int             finished_soup;
     long int        start_time;
     long int        last_soup;
+    
     
 
 }                   t_mutex;
@@ -56,6 +55,7 @@ typedef struct s_philo
     int             		time_to_eat;
     int             		time_to_sleep;
     int             		eat_n_times;
+    int                     nb_soup;
 	struct s_philo			*next;  
 }                   t_philo;
 
@@ -67,6 +67,7 @@ int     check_input(int ac, char **av);
 void	opti_sleep(long int time_in_ms, t_philo *p);
 void    set_odd_even(t_philo **p, int nb_philo);
 long int		get_time(void);
+void    print_status(t_philo *p, int status);
 
 /**** INIT *****/
 t_philo			*set_data(char **av);

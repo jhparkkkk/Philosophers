@@ -6,7 +6,7 @@ RM 			= 	rm -f
 
 INC			=	-I includes 
 
-CFLAGS		=	-Wall -Wextra -Werror -g3
+CFLAGS		=	-Wall -Wextra -Werror -g
 
 LFLAGS		=	-I./philo -lpthread
 
@@ -30,7 +30,7 @@ $(OBJS_PATH)%.o : 	$(SRCS_PATH)%.c
 			$(CC) $(CFLAGS) -c $< $(OUTPUT_OPTION) $(INC)
 
 $(NAME):	$(OBJS)
-			$(CC) $(OBJS) $(LFLAGS) $(OUTPUT_OPTION) -fsanitize=thread
+			$(CC) $(OBJS) $(LFLAGS) $(OUTPUT_OPTION)
 
 clean:
 			$(RM) $(OBJS)

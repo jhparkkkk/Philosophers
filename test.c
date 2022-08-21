@@ -6,51 +6,73 @@
 /*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 17:26:44 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/19 17:28:06 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/21 17:29:42 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <pthread.h>
+#include <stdio.h>
+#include <unistd.h>
 #include <sys/time.h>
-
-#define NUM 1000000
-#define NUM2 10000000
-
-float time_diff(struct timeval *start, struct timeval *end)
+#include <stdlib.h>
+long int		get_time(void)
 {
-    return (end->tv_sec - start->tv_sec) + 1e-6*(end->tv_usec - start->tv_usec);
+	long int			time;
+	struct timeval		current_time;
+
+	time = 0;
+	if (gettimeofday(&current_time, NULL) == -1)
+		exit (-1);
+	time = (current_time.tv_sec * 1000) + (current_time.tv_usec / 1000); //temps en millisecondes
+	return (time);
 }
 
-void loopFunc(size_t num)
+void	opti_sleep(long int time_in_ms)
 {
-    int tmp = 0;
-    for (int i = 0; i < num; ++i) {
-        tmp += 1;
+	long int	start_time;
+
+	start_time = 0;
+	start_time = get_time();
+	while ((get_time() - start_time) < time_in_ms) // !is_dead
+		usleep(time_in_ms / 10);
+}
+
+// /*
+// ** Returns the timestamp in milliseconds
+// */
+
+// long    get_time(void)
+// {
+//     struct timeval  tp;
+//     long            milliseconds;
+
+//     gettimeofday(&tp, NULL);
+//     milliseconds = tp.tv_sec * 1000;
+//     milliseconds += tp.tv_usec / 1000;
+//     return (milliseconds);
+// }
+
+/*
+** Prints time, sleeps 200ms, repeats!
+*/
+
+int main(void)
+{
+    long int start_time;
+		
+		// Remember when we started
+    start_time = get_time();
+
+    while (1)
+    {
+				// Print time from start, in ms
+        printf("%ld\n", get_time() - start_time);
+
+				// Sleep 200 times 1000 microseconds (1 millisecond)
+        opti_sleep(200);
     }
 }
 
-int main()
-{
-    struct timeval start;
-    struct timeval end;
-
-    gettimeofday(&start, NULL);
-    loopFunc(NUM);
-    gettimeofday(&end, NULL);
-
-    printf("loopFunc(%d)  time spent: %0.8f sec\n",
-           NUM, time_diff(&start, &end));
-
-
-    gettimeofday(&start, NULL);
-    loopFunc(NUM2);
-    gettimeofday(&end, NULL);
-
-    printf("loopFunc(%d) time spent: %0.8f sec\n",
-           NUM2, time_diff(&start, &end));
-
-    exit(EXIT_SUCCESS);
-}
+ // if (p->nb_soup < p->eat_n_times)
+        //     p->nb_soup++;
+        // if (p->nb_soup == p->eat_n_times)
+        //     p->mutex->finished_soup++;

@@ -6,31 +6,31 @@
 /*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 11:48:30 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/19 18:08:12 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/21 16:23:25 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void    set_odd_even(t_philo **p, int nb_philo)
-{
-    int i;
+// void    set_odd_even(t_philo **p, int nb_philo)
+// {
+//     int i;
 
-    i = 1;
+//     i = 1;
     
-    (*p)->mutex->odd = 0;
-    (*p)->mutex->even = 0;
-    while (i <= nb_philo)
-    {
-        if (i % 2 == 0)
-            (*p)->mutex->even++;
-        else
-            (*p)->mutex->odd++;
-        i++;
-    }
-    (*p)->mutex->tmp_even = (*p)->mutex->even;
-    (*p)->mutex->tmp_odd = (*p)->mutex->odd;
-}
+//     (*p)->mutex->odd = 0;
+//     (*p)->mutex->even = 0;
+//     while (i <= nb_philo)
+//     {
+//         if (i % 2 == 0)
+//             (*p)->mutex->even++;
+//         else
+//             (*p)->mutex->odd++;
+//         i++;
+//     }
+//     (*p)->mutex->tmp_even = (*p)->mutex->even;
+//     (*p)->mutex->tmp_odd = (*p)->mutex->odd;
+// }
 
 t_philo	*last_elem(t_philo *philo)
 {
@@ -66,13 +66,11 @@ t_philo *set_data(char **av)
     new_p->time_to_eat = ft_atoi(*av++);
     new_p->time_to_sleep = ft_atoi(*av++);
     new_p->eat_n_times = ft_atoi(*av);
+    new_p->nb_soup = 0;
     new_p->next = NULL;
-    new_p->mutex = malloc(sizeof(t_mutex) * new_p->nb_philo);
+    new_p->mutex = malloc(sizeof(t_mutex ) * 1);
     if (!new_p->mutex)
 		return (NULL);
-    new_p->mutex->someone_is_dead = 0;
-    // set_odd_even(&new_p, new_p->nb_philo);
-    
     return (new_p);
 }
 

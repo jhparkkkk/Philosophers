@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeepark <jeepark@student42.fr>             +#+  +:+       +#+        */
+/*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 11:48:24 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/20 17:13:39 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/21 17:49:43 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,105 +16,80 @@
 void    eat(t_philo *p)
 {
     (*p).mutex->last_soup = get_time();
-
     if (p->id % 2 == 0)
     {
-        if (p->id == p->nb_philo)
-            pthread_mutex_lock(&p->mutex->chopsticks[0]);                 // DROITE
-        else
-            pthread_mutex_lock(&p->mutex->chopsticks[p->id]);             // DROITE
-        printf("%d   %d %s\n", 0, p->id, CHOP);
-                
-        pthread_mutex_lock(&p->mutex->chopsticks[p->id - 1]);             // GAUCHE
-        
-        printf("%d   %d %s\n", 0, p->id, CHOP);
-
-        printf("%d %d %s\n", p->time_to_eat, p->id, EAT);
+        pthread_mutex_lock(&p->mutex->chopsticks[p->id - 1]);
+        pthread_mutex_lock(&p->mutex->chopsticks[p->id % p->nb_philo]);
         opti_sleep(p->time_to_eat, p);
+        pthread_mutex_lock(&p->mutex->print);
+        printf("%ld %d %s\n", get_time() - p->mutex->start_time, p->id, EAT);
+        pthread_mutex_unlock(&p->mutex->print);
         
-        pthread_mutex_unlock(&p->mutex->chopsticks[p->id - 1]);           // GAUCHE 
-            
-        if (p->id == p->nb_philo)
-            pthread_mutex_unlock(&p->mutex->chopsticks[0]);               // DROITE
-        else
-            pthread_mutex_unlock(&p->mutex->chopsticks[p->id]);           // DROITE 
-            
-        return ;
+        pthread_mutex_unlock(&p->mutex->chopsticks[p->id - 1]);
+        pthread_mutex_unlock(&p->mutex->chopsticks[p->id % p->nb_philo]);
     }
-    
-    if (p->id % 2 != 0)
+    else
     {
-        if (p->id == 1)
-            pthread_mutex_lock(&p->mutex->chopsticks[p->nb_philo - 1]);   // GAUCHE
-        else
-            pthread_mutex_lock(&p->mutex->chopsticks[p->id - 2]);         // GAUCHE
-        printf("%d   %d %s\n", 0, p->id, CHOP);
+        pthread_mutex_lock(&p->mutex->chopsticks[p->id % p->nb_philo]);
+        pthread_mutex_lock(&p->mutex->chopsticks[p->id - 1]);
         
-        if (p->id == p->nb_philo)
-            pthread_mutex_lock(&p->mutex->chopsticks[0]);                 // DROITE
-        else    
-            pthread_mutex_lock(&p->mutex->chopsticks[p->id]);             // DROITE
-        printf("%d   %d %s\n", 0, p->id, CHOP);
-        
-        printf("%d %d %s\n", p->time_to_eat, p->id, EAT);
         opti_sleep(p->time_to_eat, p);
-        
-        
-        if (p->id == p->nb_philo)
-            pthread_mutex_unlock(&p->mutex->chopsticks[0]);               // DROITE
-        else
-            pthread_mutex_unlock(&p->mutex->chopsticks[p->id]);           // DROITE
-        if (p->id == 1)
-            pthread_mutex_unlock(&p->mutex->chopsticks[p->nb_philo - 1]); // GAUCHE
-        else
-            pthread_mutex_unlock(&p->mutex->chopsticks[p->id - 2]);       // GAUCHE
-
-    } 
+        pthread_mutex_lock(&p->mutex->print);
+        printf("%ld %d %s\n", get_time() - p->mutex->start_time, p->id, EAT);
+        pthread_mutex_unlock(&p->mutex->print);
+        pthread_mutex_unlock(&p->mutex->chopsticks[p->id % p->nb_philo]);
+        pthread_mutex_unlock(&p->mutex->chopsticks[p->id - 1]);
+    }
 }
 
 int    dead_philo(t_philo *p)
 {
     pthread_mutex_lock(&p->mutex->check_death);
-    if (get_time() - p->mutex->start_time
-        - p->mutex->last_soup >= p->time_to_die)
+    if ( get_time() - p->mutex->last_soup + p->time_to_sleep > p->time_to_die)
     {
-        printf("DEAD\n");
         pthread_mutex_lock(&p->mutex->signal_death);
-        // thread->is_alive = 0;
         p->mutex->dead_philo = 1;
         pthread_mutex_unlock(&p->mutex->signal_death);
-        pthread_mutex_lock(&p->mutex->check_death);
+        pthread_mutex_unlock(&p->mutex->check_death);
         return (1);
     }
-    pthread_mutex_lock(&p->mutex->check_death);
+    pthread_mutex_unlock(&p->mutex->check_death);
 
     return (0);
 }
 
+void    change_status(t_philo *p)
+{
+    if (dead_philo(p))
+    {
+        
+        pthread_mutex_lock(&p->mutex->print);
+        opti_sleep(p->time_to_die - p->time_to_sleep, p);
+        printf("%ld %d %s\n", get_time() - p->mutex->start_time, p->id, "died\n");
+        pthread_mutex_unlock(&p->mutex->print);
+        exit (0);
+    }
+    opti_sleep(p->time_to_sleep, p);
+    print_status(p, 1);
+    print_status(p, 2);
+
+}
 void *routine(void *arg)
 {
     t_philo *p;
     p = (t_philo *)arg;
-    // pthread_mutex_t m;
-    
-    // if (pthread_mutex_init(&m, 0) != 0)
-    //     return (NULL);    
-    // pthread_mutex_lock(&m);
-    while (!p->mutex->dead_philo)
+
+    while (1)
     {
-        if (p->id % 2 != 0)
-            opti_sleep(p->time_to_eat, p);
+        if (p->mutex->dead_philo)
+            break ;
+        // if (p->id % 2 != 0)
+        //     opti_sleep(p->time_to_eat, p);
         eat(p);
-        // (*p).mutex->last_soup = get_time();
-        printf("last_soup : %ld\n", (*p).mutex->last_soup);
-        // printf("%d %d %s\n", p-, p->id, THINK);
-        // opti_sleep(200, p);
+        change_status(p);
 
-        printf("%d %d %s\n", p->time_to_sleep, p->id, SLEEP);
-        opti_sleep(p->time_to_sleep, p);
-        // pthread_mutex_unlock(&m);
-
-    }   
+    }
+    // printf("SAD PHILO\n");
     return (NULL);
 }
 
@@ -148,25 +123,26 @@ int run_thread(t_philo **p)
 int main(int ac, char **av)
 {
     t_philo **p;
-    // t_philo *tmp;
 
     p = NULL;
-    // tmp = NULL;
     if (check_input(ac, av))
         return(printf("error\n"), EXIT_FAILURE);
     p = init(av);
     set_mutex(p);
-    printf("START TIME : %ld\n", (*p)->mutex->start_time);
-    printf("START nb odd  : %d\n", (*p)->mutex->tmp_odd);
-    printf("NOW : %ld\n", get_time() - (*p)->mutex->start_time);
     run_thread(p);
     
     // printf("END nb even : %d\n", (*p)->mutex->tmp_even);
     // printf("END nb odd  : %d\n", (*p)->mutex->tmp_odd);
 
 
+    int i = 0;
+    while (i < (*p)->nb_philo)
+    {
+        pthread_mutex_destroy(&(*p)->mutex->chopsticks[i]);
+        i++;
+    }
+    pthread_mutex_destroy(&(*p)->mutex->print);
     
-
     /*** DEBUGGER ***/
     // if (!p)
     //     return (printf("sad philo\n"), 0);
@@ -185,5 +161,3 @@ int main(int ac, char **av)
     
     return (0);
 }
-// TO DO : check someone is dead 
-// TO DO : measure time after soup
