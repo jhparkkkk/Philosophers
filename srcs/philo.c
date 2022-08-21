@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jeepark <jeepark@student42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 11:48:24 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/19 18:29:38 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/20 17:13:39 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 void    eat(t_philo *p)
 {
+    (*p).mutex->last_soup = get_time();
+
     if (p->id % 2 == 0)
     {
         if (p->id == p->nb_philo)
@@ -28,7 +30,7 @@ void    eat(t_philo *p)
         printf("%d   %d %s\n", 0, p->id, CHOP);
 
         printf("%d %d %s\n", p->time_to_eat, p->id, EAT);
-        opti_sleep(p->time_to_eat);
+        opti_sleep(p->time_to_eat, p);
         
         pthread_mutex_unlock(&p->mutex->chopsticks[p->id - 1]);           // GAUCHE 
             
@@ -55,7 +57,7 @@ void    eat(t_philo *p)
         printf("%d   %d %s\n", 0, p->id, CHOP);
         
         printf("%d %d %s\n", p->time_to_eat, p->id, EAT);
-        opti_sleep(p->time_to_eat);
+        opti_sleep(p->time_to_eat, p);
         
         
         if (p->id == p->nb_philo)
@@ -70,23 +72,24 @@ void    eat(t_philo *p)
     } 
 }
 
-// int    is_someone_dead(t_thread *p)
-// {
-//     pthread_mutex_lock(thread->philo->mutex_death_check);
-//     if (current_time() - thread->philo->start_time
-//         - thread->last_meal >= p->time_to_die)
-//     {
-//         philo_print(thread, thread->philo_idx, 5);
-//         pthread_mutex_lock(thread->philo->mutex_death);
-//         thread->is_alive = 0;
-//         p->someone_is_dead = 1;
-//         pthread_mutex_unlock(thread->philo->mutex_death);
-//         pthread_mutex_unlock(thread->philo->mutex_death_check);
-//         return (1);
-//     }
-//     pthread_mutex_unlock(thread->philo->mutex_death_check);
-//     return (0);
-// }
+int    dead_philo(t_philo *p)
+{
+    pthread_mutex_lock(&p->mutex->check_death);
+    if (get_time() - p->mutex->start_time
+        - p->mutex->last_soup >= p->time_to_die)
+    {
+        printf("DEAD\n");
+        pthread_mutex_lock(&p->mutex->signal_death);
+        // thread->is_alive = 0;
+        p->mutex->dead_philo = 1;
+        pthread_mutex_unlock(&p->mutex->signal_death);
+        pthread_mutex_lock(&p->mutex->check_death);
+        return (1);
+    }
+    pthread_mutex_lock(&p->mutex->check_death);
+
+    return (0);
+}
 
 void *routine(void *arg)
 {
@@ -97,17 +100,18 @@ void *routine(void *arg)
     // if (pthread_mutex_init(&m, 0) != 0)
     //     return (NULL);    
     // pthread_mutex_lock(&m);
-    while (!p->mutex->someone_is_dead)
+    while (!p->mutex->dead_philo)
     {
         if (p->id % 2 != 0)
-            opti_sleep(p->time_to_eat);
+            opti_sleep(p->time_to_eat, p);
         eat(p);
-        // (*p).mutex->last_soup = (get_time - (*p).mutex->start_time);
-        printf("%d %d %s\n", 200, p->id, THINK);
-        opti_sleep(200);
+        // (*p).mutex->last_soup = get_time();
+        printf("last_soup : %ld\n", (*p).mutex->last_soup);
+        // printf("%d %d %s\n", p-, p->id, THINK);
+        // opti_sleep(200, p);
 
         printf("%d %d %s\n", p->time_to_sleep, p->id, SLEEP);
-        opti_sleep(p->time_to_sleep);
+        opti_sleep(p->time_to_sleep, p);
         // pthread_mutex_unlock(&m);
 
     }   
@@ -144,17 +148,16 @@ int run_thread(t_philo **p)
 int main(int ac, char **av)
 {
     t_philo **p;
-    t_philo *tmp;
+    // t_philo *tmp;
 
     p = NULL;
-    tmp = NULL;
+    // tmp = NULL;
     if (check_input(ac, av))
         return(printf("error\n"), EXIT_FAILURE);
     p = init(av);
     set_mutex(p);
     printf("START TIME : %ld\n", (*p)->mutex->start_time);
     printf("START nb odd  : %d\n", (*p)->mutex->tmp_odd);
-    opti_sleep(100);
     printf("NOW : %ld\n", get_time() - (*p)->mutex->start_time);
     run_thread(p);
     

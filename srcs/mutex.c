@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mutex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jeepark <jeepark@student42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 14:42:18 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/19 18:25:12 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/20 17:07:35 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,10 @@ int set_mutex(t_philo **p)
             return (free(mutex), EXIT_FAILURE);
         i++;
     }
+    if (pthread_mutex_init(&(*p)->mutex->check_death, 0) != 0)
+            return (EXIT_FAILURE);
+    if (pthread_mutex_init(&(*p)->mutex->signal_death, 0) != 0)
+        return (EXIT_FAILURE);
     (*p)->mutex->start_time = get_time();
     (*p)->mutex->last_soup = 0;
     set_odd_even(p, (*p)->nb_philo);
@@ -45,7 +49,9 @@ int set_mutex(t_philo **p)
         tmp->mutex->tmp_even = (*p)->mutex->tmp_even;
         tmp->mutex->start_time = (*p)->mutex->start_time;
         tmp->mutex->last_soup =(*p)->mutex->last_soup;
-        
+        tmp->mutex->check_death = (*p)->mutex->check_death;
+        tmp->mutex->signal_death = (*p)->mutex->signal_death;
+
         tmp = tmp->next;
         i++;
     }

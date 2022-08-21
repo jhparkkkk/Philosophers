@@ -8,7 +8,7 @@ INC			=	-I includes
 
 CFLAGS		=	-Wall -Wextra -Werror -g3
 
-LFLAGS		=	-L./philo -I./philo -lpthread
+LFLAGS		=	-I./philo -lpthread
 
 FILES		=	philo.c \
 				mutex.c \

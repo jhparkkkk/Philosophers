@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sleep.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jeepark <jeepark@student42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:59:26 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/19 18:10:42 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/20 17:11:01 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ long int		get_time(void)
 	return (time);
 }
 
-void	opti_sleep(long int time_in_ms)
+void	opti_sleep(long int time_in_ms, t_philo *p)
 {
 	long int	start_time;
 
 	start_time = 0;
 	start_time = get_time();
-	while ((get_time() - start_time) < time_in_ms) // !is_dead
+	while ((get_time() - start_time) < time_in_ms && !p->mutex->dead_philo) // !is_dead
 		usleep(time_in_ms / 10);
 }
