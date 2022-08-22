@@ -12,6 +12,7 @@ LFLAGS		=	-I./philo -lpthread
 
 FILES		=	philo.c \
 				mutex.c \
+				print.c \
 				sleep.c \
 				init.c \
 				destroy.c \

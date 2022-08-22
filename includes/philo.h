@@ -6,7 +6,7 @@
 /*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 11:48:47 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/21 15:42:33 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/22 12:11:09 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_mutex
     pthread_mutex_t check_death;
     pthread_mutex_t signal_death;
     pthread_mutex_t print;
+    pthread_mutex_t exit;
     int             dead_philo;
     int             finished_soup;
     long int        start_time;
@@ -67,7 +68,7 @@ int     check_input(int ac, char **av);
 void	opti_sleep(long int time_in_ms, t_philo *p);
 void    set_odd_even(t_philo **p, int nb_philo);
 long int		get_time(void);
-void    print_status(t_philo *p, int status);
+void    print_msg(t_philo *p, int status);
 
 /**** INIT *****/
 t_philo			*set_data(char **av);
