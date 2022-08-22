@@ -6,7 +6,7 @@
 /*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 15:59:26 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/22 17:00:24 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/22 18:03:12 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,6 @@ void	opti_sleep(long int time_in_ms, t_philo *p)
 
 	start_time = 0;
 	start_time = get_time();
-	while ((get_time() - start_time) < time_in_ms) // !is_dead
+	while ((get_time() - start_time) < time_in_ms && !dead_philo(p)) // !is_dead
 		usleep(time_in_ms / 10);
 }

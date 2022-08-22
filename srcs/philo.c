@@ -6,7 +6,7 @@
 /*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 11:48:24 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/22 17:00:39 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/22 18:05:57 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,9 @@ void    drop_chopstick(t_philo *p)
 int    dead_philo(t_philo *p)
 {
     pthread_mutex_lock(&p->mutex->check_death);
-    if (p->mutex->last_soup + p->time_to_eat + p->time_to_sleep >= p->time_to_die)
+    if (get_time() - p->last_soup + p->time_to_sleep >= p->time_to_die)
     {
+        printf("DEAD\n");
         pthread_mutex_lock(&p->mutex->signal_death);
         p->mutex->dead_philo = 1;
         pthread_mutex_unlock(&p->mutex->signal_death);
@@ -64,15 +65,15 @@ void *routine(void *arg)
 {
     t_philo *p;
     p = (t_philo *)arg;
-    int dead;
-    dead = 0;
     
-    while (get_time() != p->mutex->start_time + 100)
+    while (get_time() != p->mutex->start_time + 100 && !p->mutex->dead_philo)
     {
         grab_chopstick(p);
         print_msg(p, 1);
+        
         opti_sleep(p->time_to_eat, p);
         drop_chopstick(p);
+        
         print_msg(p, 2);
         opti_sleep(p->time_to_sleep, p);
         print_msg(p, 3);    

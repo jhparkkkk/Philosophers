@@ -6,7 +6,7 @@
 /*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 14:42:18 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/22 13:51:32 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/22 17:58:42 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ int set_mutex(t_philo **p)
         return (EXIT_FAILURE);
     
     (*p)->mutex->start_time = get_time();
-    (*p)->mutex->last_soup = 0;
     (*p)->mutex->dead_philo = 0;
     (*p)->mutex->finished_soup = 0;
 
@@ -54,8 +53,7 @@ int set_mutex(t_philo **p)
         tmp->mutex->print = (*p)->mutex->print;
         tmp->mutex->exit = (*p)->mutex->exit;
         tmp->mutex->start_time = (*p)->mutex->start_time;
-        tmp->mutex->last_soup =(*p)->mutex->last_soup;
-        tmp->mutex->dead_philo = (*p)->mutex->dead_philo = 0;
+        tmp->mutex->dead_philo = (*p)->mutex->dead_philo;
         tmp->mutex->finished_soup = (*p)->mutex->finished_soup;
 
         tmp = tmp->next;

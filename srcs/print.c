@@ -6,7 +6,7 @@
 /*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 12:03:06 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/22 16:46:26 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/22 18:02:19 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void    print_msg(t_philo *p, int type)
     else if (type == 1)
     {
         printf("%ld %d %s\n", get_time() - p->mutex->start_time, p->id, EAT);
-        p->mutex->last_soup = get_time() - p->mutex->start_time;
+        p->last_soup = get_time();
     }
     else if (type == 2)
         printf("%ld %d %s\n", get_time() - p->mutex->start_time, p->id, SLEEP);

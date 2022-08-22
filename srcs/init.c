@@ -6,7 +6,7 @@
 /*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 11:48:30 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/21 16:23:25 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/22 17:59:17 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ t_philo *set_data(char **av)
     new_p->time_to_sleep = ft_atoi(*av++);
     new_p->eat_n_times = ft_atoi(*av);
     new_p->nb_soup = 0;
+    new_p->last_soup = 0;
     new_p->next = NULL;
     new_p->mutex = malloc(sizeof(t_mutex ) * 1);
     if (!new_p->mutex)
