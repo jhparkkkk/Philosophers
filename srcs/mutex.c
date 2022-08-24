@@ -6,7 +6,7 @@
 /*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 14:42:18 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/22 17:58:42 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/24 23:23:13 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,20 @@ int set_mutex(t_philo **p)
             return (free(mutex), EXIT_FAILURE);
         i++;
     }
-    if (pthread_mutex_init(&(*p)->mutex->check_death, 0) != 0)
-            return (EXIT_FAILURE);
-    if (pthread_mutex_init(&(*p)->mutex->signal_death, 0) != 0)
-        return (EXIT_FAILURE);
     if (pthread_mutex_init(&(*p)->mutex->print, 0) != 0)
         return (EXIT_FAILURE);
-    if (pthread_mutex_init(&(*p)->mutex->exit, 0) != 0)
-        return (EXIT_FAILURE);
+    // if (pthread_mutex_init(&(*p)->mutex->check_death, 0) != 0)
+    //     return (EXIT_FAILURE);
+    // if (pthread_mutex_init(&(*p)->mutex->signal_death, 0) != 0)
+    //     return (EXIT_FAILURE);
     
-    (*p)->mutex->start_time = get_time();
+    // if (pthread_mutex_init(&(*p)->mutex->exit, 0) != 0)
+    //     return (EXIT_FAILURE);
+    
     (*p)->mutex->dead_philo = 0;
     (*p)->mutex->finished_soup = 0;
-
+    (*p)->mutex->start_time = get_time();
+    
     tmp = *p;
     i = 0;
     while(i < (*p)->nb_philo)

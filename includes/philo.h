@@ -6,7 +6,7 @@
 /*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 11:48:47 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/22 17:58:23 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/24 22:32:24 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,10 @@ typedef struct s_mutex
     pthread_mutex_t signal_death;
     pthread_mutex_t print;
     pthread_mutex_t exit;
+    
     int             dead_philo;
     int             finished_soup;
     long int        start_time;
-    long int        time;
-    long int        last_soup;
-    
     
 
 }                   t_mutex;
@@ -59,6 +57,7 @@ typedef struct s_philo
     int             		time_to_sleep;
     int             		eat_n_times;
     int                     nb_soup;
+    int                     alive;
 	struct s_philo			*next;  
 }                   t_philo;
 

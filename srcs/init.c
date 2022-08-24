@@ -6,31 +6,11 @@
 /*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 11:48:30 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/22 17:59:17 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/24 23:34:58 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-// void    set_odd_even(t_philo **p, int nb_philo)
-// {
-//     int i;
-
-//     i = 1;
-    
-//     (*p)->mutex->odd = 0;
-//     (*p)->mutex->even = 0;
-//     while (i <= nb_philo)
-//     {
-//         if (i % 2 == 0)
-//             (*p)->mutex->even++;
-//         else
-//             (*p)->mutex->odd++;
-//         i++;
-//     }
-//     (*p)->mutex->tmp_even = (*p)->mutex->even;
-//     (*p)->mutex->tmp_odd = (*p)->mutex->odd;
-// }
 
 t_philo	*last_elem(t_philo *philo)
 {
@@ -56,7 +36,6 @@ static void data_add_back(t_philo **philo, t_philo *new_p)
 t_philo *set_data(char **av)
 {
     t_philo *new_p;
-    
     new_p = NULL;
     new_p = malloc(sizeof(t_philo));
     if (!new_p)
@@ -68,6 +47,7 @@ t_philo *set_data(char **av)
     new_p->eat_n_times = ft_atoi(*av);
     new_p->nb_soup = 0;
     new_p->last_soup = 0;
+    new_p->alive = 1;
     new_p->next = NULL;
     new_p->mutex = malloc(sizeof(t_mutex ) * 1);
     if (!new_p->mutex)
