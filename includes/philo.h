@@ -6,7 +6,7 @@
 /*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 11:48:47 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/26 20:46:12 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/26 22:01:15 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@
 typedef struct t_mutex
 {
 	pthread_mutex_t *chop;
-	pthread_mutex_t print;
+	// pthread_mutex_t print;
 	pthread_mutex_t sig_death;
 	pthread_mutex_t update_soup;
-	pthread_mutex_t watch;
-	pthread_mutex_t routine;
+	// pthread_mutex_t watch;
+	// pthread_mutex_t routine;
     
     
     
@@ -63,7 +63,6 @@ typedef struct s_philo
     pthread_t   		    th; 
     long int                last_soup;
     int                     nb_soup;
-    int                     alive;
 	t_set					*s;  
 }                   		t_philo;
 
@@ -82,6 +81,7 @@ void    *watch_death(void *arg);
 void	*routine(void *arg);
 int	ft_strcmp(char *s1, char *s2);
 int who_full(t_philo *p);
+void    destroy_philo(t_philo **p, int idx);
 
 
 

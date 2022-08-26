@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   eat.c                                              :+:      :+:    :+:   */
+/*   chopsticks.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeepark <jeepark@student42.fr>             +#+  +:+       +#+        */
+/*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 16:22:56 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/26 16:23:25 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/26 21:50:43 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void    grab_chopsticks(t_philo *p)
     {
         pthread_mutex_lock(&p->s->m.chop[p->id - 1]);
         print_msg(p, CHOP);
-
         pthread_mutex_lock(&p->s->m.chop[p->id % p->s->nb_philo]);
         print_msg(p, CHOP);
 
@@ -31,7 +30,6 @@ void    grab_chopsticks(t_philo *p)
         print_msg(p, CHOP);
 
     }
-
 }
 
 void    drop_chopsticks(t_philo *p)

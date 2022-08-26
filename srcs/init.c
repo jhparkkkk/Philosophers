@@ -6,7 +6,7 @@
 /*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 11:48:30 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/26 20:46:21 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/26 21:25:47 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ t_philo **init_philo(t_set *s)
     while (i < s->nb_philo)
     {
         p[i] = malloc(sizeof(t_philo));
+        if (!p[i])
+            return(destroy_philo(p, i), NULL);
         p[i]->id = i + 1;
         p[i]->s = s;
         i++;
