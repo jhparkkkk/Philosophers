@@ -6,7 +6,7 @@
 /*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 11:48:47 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/26 22:01:15 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/26 23:03:33 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ typedef struct s_set
     int		nb_philo;
     int		dead;
     int     full;
+    long int time_death;
+    int     id_death;
 	t_time	t;
 	t_mutex m;
 }       t_set;

@@ -6,7 +6,7 @@
 /*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 11:48:24 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/26 21:39:46 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/26 23:14:51 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,30 +37,6 @@ int main(int ac, char **av)
     return (0);
 }
 
-// void	free_t_proc_tab(t_proc **proc_tab)
-// {
-// 	int	i;
-// 	int	forks;
-
-// 	if (!proc_tab)
-// 		return ;
-// 	i = 0;
-// 	forks = proc_tab[i]->nb_forks;
-// 	while (i < forks && proc_tab[i])
-// 	{
-// 		if (proc_tab[i]->cmd)
-// 		{
-// 			if (proc_tab[i]->cmd->s)
-// 			{
-// 				free(proc_tab[i]->cmd->s);
-// 				proc_tab[i]->cmd->s = NULL;
-// 			}
-// 			free(proc_tab[i]->cmd);
-// 		}
-// 		if (proc_tab[i]->opt)
-// 			free_attr(proc_tab[i]->opt, proc_tab[i]->nb_opt);
-// 		free(proc_tab[i]);
-// 		i++;
-// 	}
-// 	free(proc_tab);
-// }
+// 4 500 200 2147483647
+// un philo meurt au bout de 500 ms mais le prg ne s'arrete pas car les philos sont coinces dans leur sommeil
+// Q : dois je attendr la fin de sommeil ou interrompre le sommeil ? 

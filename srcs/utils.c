@@ -6,7 +6,7 @@
 /*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 11:48:35 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/26 19:29:32 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/26 22:52:39 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,20 @@ static int	ft_isdigit(int c)
 	return (0);
 }
 
+int	ft_isalldigit(char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (!ft_isdigit(s[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 int	ft_atoi(const char	*str)
 {
 	int	nb;
@@ -36,6 +50,8 @@ int	ft_atoi(const char	*str)
 
 	nb = 0;
 	neg = 1;
+	if (!ft_isalldigit((char *)str))
+		return (-1);
 	while ((*str >= 9 && *str <= 13) || *str == 32)
 		str++;
 	if (*str == '-')

@@ -6,7 +6,7 @@
 /*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 16:16:57 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/26 22:14:55 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/26 23:12:58 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,12 @@ int is_dead(t_philo *p)
     {
         pthread_mutex_lock(&p->s->m.sig_death);
         p->s->dead = 1;
+        p->s->full = -1;
+        p->s->time_death = get_time() - p->s->t.start;
+        p->s->id_death = p->id;
+        
         printf("%ld %d died\n", get_time() - p->s->t.start, p->id);
-        if (p->s->nb_philo == 1)
-            return (0);
-            // drop_chopsticks(p);
         pthread_mutex_unlock(&p->s->m.sig_death);
-        // if (p->s->nb_philo == 1)
-        //     drop_chopsticks(p);
         return (0);
     }
     
@@ -103,5 +102,6 @@ void    *watch_death(void *arg)
             break;
         usleep(80);
     }
+    // printf("Every philosopher ate %d times\n", p->s->t.eat_n_times);
     return (NULL);
 }
