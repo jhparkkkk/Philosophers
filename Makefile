@@ -11,10 +11,14 @@ CFLAGS		=	-Wall -Wextra -Werror -g
 LFLAGS		=	-I./philo -lpthread
 
 FILES		=	philo.c \
+				init.c \
 				mutex.c \
+				threads.c \
+				routine.c \
+				end_routine.c \
+				chopsticks.c \
 				print.c \
 				sleep.c \
-				init.c \
 				destroy.c \
 				utils.c \
 
