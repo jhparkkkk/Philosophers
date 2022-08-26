@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeepark <jeepark@student42.fr>             +#+  +:+       +#+        */
+/*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 11:48:47 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/26 16:25:45 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/26 20:46:12 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,12 @@ typedef struct t_mutex
 	pthread_mutex_t *chop;
 	pthread_mutex_t print;
 	pthread_mutex_t sig_death;
+	pthread_mutex_t update_soup;
+	pthread_mutex_t watch;
+	pthread_mutex_t routine;
+    
+    
+    
 }					t_mutex;
 
 typedef struct s_time
@@ -46,6 +52,7 @@ typedef struct s_set
 {
     int		nb_philo;
     int		dead;
+    int     full;
 	t_time	t;
 	t_mutex m;
 }       t_set;
@@ -61,19 +68,20 @@ typedef struct s_philo
 }                   		t_philo;
 
 int		check_input(int ac, char **av);
-void	init_s(t_set *s, char **av);
+void	init_s(t_set *s, char **av, int ac);
 int    init_mutex(t_set *s, int total);
 t_philo **init_philo(t_set *s);
 int run_thread(t_philo **p);
 void	opti_sleep(long int time_in_ms);
 long int		get_time(void);
-int   print_msg(t_philo *p, char *msg);
+int     print_msg(t_philo *p, char *msg);
 void    grab_chopsticks(t_philo *p);
 void    drop_chopsticks(t_philo *p);
 int who_dead(t_philo *p);
 void    *watch_death(void *arg);
 void	*routine(void *arg);
 int	ft_strcmp(char *s1, char *s2);
+int who_full(t_philo *p);
 
 
 

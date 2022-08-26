@@ -19,7 +19,6 @@ FILES		=	philo.c \
 				chopsticks.c \
 				print.c \
 				sleep.c \
-				destroy.c \
 				utils.c \
 
 SRCS_PATH	= 	./srcs/

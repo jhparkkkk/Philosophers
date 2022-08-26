@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeepark <jeepark@student42.fr>             +#+  +:+       +#+        */
+/*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 16:15:49 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/26 16:16:05 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/26 20:28:14 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,25 @@ void	*routine(void *arg)
 	pthread_t	death;
 
 	p = (t_philo *)arg;
+    
+    // pthread_mutex_lock(&p->s->m.watch);
     pthread_create(&death, NULL, watch_death, p);
-	pthread_detach(death);
+    pthread_detach(death);
+    // pthread_mutex_unlock(&p->s->m.watch);
+
 	
     // if (p->id % 2 == 0)
-    //        usleep(10);
-	
-	while ( 1)
+    // opti_sleep(p->s->t.to_eat);
+    
+    while (1)
 	{
         // eat
         grab_chopsticks(p);
-        if (print_msg(p, EAT) == STOP)
+        if (print_msg(p, EAT) == STOP) // drop chop
+        {
+            drop_chopsticks(p);
             return (NULL);
+        }
         opti_sleep(p->s->t.to_eat);
         drop_chopsticks(p);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeepark <jeepark@student42.fr>             +#+  +:+       +#+        */
+/*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 11:48:35 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/26 16:20:30 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/26 19:29:32 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	ft_atoi(const char	*str)
 
 int check_input(int ac, char **av)
 {
-	if (ac != 6)
+	if (ac < 5 || ac > 6)
 		return (1);
     av++;
     while(av && *av)

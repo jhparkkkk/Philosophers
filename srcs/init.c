@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeepark <jeepark@student42.fr>             +#+  +:+       +#+        */
+/*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 11:48:30 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/26 16:11:35 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/26 20:46:21 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_philo **init_philo(t_set *s)
     return (p);
 }
 
-void    init_s(t_set *s, char **av)
+void    init_s(t_set *s, char **av, int ac)
 {
     s->nb_philo = ft_atoi(*av++);
     s->dead = 0;
@@ -39,5 +39,11 @@ void    init_s(t_set *s, char **av)
     s->t.to_die = ft_atoi(*av++);
     s->t.to_eat = ft_atoi(*av++);
     s->t.to_sleep = ft_atoi(*av++);
-    s->t.eat_n_times = ft_atoi(*av);
+    if (ac == 6)
+    {
+        s->t.eat_n_times = ft_atoi(*av);
+        s->full = 0;
+    }
+    else
+        s->full =-1;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mutex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeepark <jeepark@student42.fr>             +#+  +:+       +#+        */
+/*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 14:42:18 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/26 16:07:25 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/26 18:23:29 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,11 @@ int    init_mutex(t_set *s, int total)
     }
     if (pthread_mutex_init(&s->m.print, 0) != 0)
         return (EXIT_FAILURE);
+     if (pthread_mutex_init(&s->m.update_soup, 0) != 0)
+        return (EXIT_FAILURE);
     if (pthread_mutex_init(&s->m.sig_death, 0) != 0)
+        return (EXIT_FAILURE);
+    if (pthread_mutex_init(&s->m.watch, 0) != 0)
         return (EXIT_FAILURE);
     return (EXIT_SUCCESS);
 }
