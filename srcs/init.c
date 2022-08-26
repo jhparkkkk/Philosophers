@@ -6,7 +6,7 @@
 /*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 11:48:30 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/26 21:25:47 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/26 22:12:16 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ t_philo **init_philo(t_set *s)
             return(destroy_philo(p, i), NULL);
         p[i]->id = i + 1;
         p[i]->s = s;
+        p[i]->nb_soup = 0;
+        p[i]->last_soup = 0;
         i++;
     }
     return (p);

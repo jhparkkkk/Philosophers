@@ -6,7 +6,7 @@
 /*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 21:09:01 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/26 21:45:30 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/26 22:17:20 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,7 @@ void    destroy_philo(t_philo **p, int idx)
     i = 0;
     total = (*p)->s->nb_philo;
 
-    // destroy_mutex((*p)->s->m, total);
-    // free((*p)->s->m.chop);
+    free((*p)->s->m.chop);
     while (i < total && p[i])
     {
         // free((*p)->s->m.chop);

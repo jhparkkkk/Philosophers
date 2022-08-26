@@ -6,7 +6,7 @@
 /*   By: jeepark <jeepark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 16:16:57 by jeepark           #+#    #+#             */
-/*   Updated: 2022/08/26 22:04:18 by jeepark          ###   ########.fr       */
+/*   Updated: 2022/08/26 22:14:55 by jeepark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,14 @@ int is_dead(t_philo *p)
     pthread_mutex_unlock(&p->s->m.sig_death);
 
     time = time_left(p);
-    if (time > p->s->t.to_die)
+    if (time > (long int)p->s->t.to_die)
     {
         pthread_mutex_lock(&p->s->m.sig_death);
         p->s->dead = 1;
         printf("%ld %d died\n", get_time() - p->s->t.start, p->id);
-        // if (p->s->nb_philo == 1)
-        //     drop_chopsticks(p);
+        if (p->s->nb_philo == 1)
+            return (0);
+            // drop_chopsticks(p);
         pthread_mutex_unlock(&p->s->m.sig_death);
         // if (p->s->nb_philo == 1)
         //     drop_chopsticks(p);
